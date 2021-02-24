@@ -27,7 +27,7 @@ For example:
 It will open the image <image_name>.jpg (grayscale) in one window. You have to choose the four points in clockwise direction starting from the top-left point. After the four points are selected, it will open a new window with the projected image. 
 Now there are two option
 1. If satisfied with the result Clicking "s" or "S" button on the keyborad will save the projected image as <image_name>Transformed.jpg and will open a new window with the cropped image which is then saved in the name of <image_name>Cropped.jpg.
-2. 2.In case you wish to reselect those 4 points then press any button other than "s" or "S". It will open the Original Grayscaled Image window again and you can again proceed same as above.
+2. In case you wish to reselect those 4 points then press any button other than "s" or "S". It will open the Original Grayscaled Image window again and you can again proceed same as above.
 # To help
 ```bash
 make help
