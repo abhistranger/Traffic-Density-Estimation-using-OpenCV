@@ -17,20 +17,16 @@ make all
 ```
 # To Run
 ```bash
-./task1 image_name
+./task1 <image_name>.jpg
 ```
 For example:
 ```
 ./task1 empty.jpg
 ```
 
-It will open the image empty.jpg in one window, which is converted in grayscale. You have to choose the four points in clockwise direction starting from top-left point. If you don't want to go further and want to end here you can press "e" or "E" to close this image window. So, If you choosed four points then after four points selection, it will open a new window with the projected image. Now there are two option, 
-if u click "s" or "S" button on keyborad then it will open a new window with the cropped image and if you think you haven't chossen correct 4 point then press any button other than "s" or "S", it will open apain the original grayscaled image window and you can again process same as above.
-
-# To help
-```bash
-make help
-```
-If you enter wrong command then the help menu will be opened.
-
-Note: All the ouput images will be saved in the same directory.
+It will open the image <image_name>.jpg (grayscale) in one window. You have to choose the four points in clockwise direction starting from the top-left point. After the four points are selected, it will open a new window with the projected image. 
+Now there are two option
+1. If satisfied with the result Clicking "s" or "S" button on the keyborad will save the projected image as <image_name>Transformed.jpg and will open a new window with the cropped image which is then saved in the name of <image_name>Cropped.jpg.
+2.In case you wish to reselect those 4 points then press any button other than "s" or "S". It will open the Original Grayscaled Image window again and you can again proceed same as above.
+*You can choose to exit the Original Grayscale Image window anytime by pressing "e" or"E" key on the keyboard.
+*All the ouput images will be saved in the same directory.
