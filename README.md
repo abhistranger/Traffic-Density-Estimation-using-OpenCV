@@ -16,8 +16,9 @@ or
 make all
 ```
 # To Run
+```bash
 ./task1 image_name
-
+```
 For example:
 ```
 ./task1 empty.jpg
