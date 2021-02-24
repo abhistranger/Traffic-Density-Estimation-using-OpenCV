@@ -24,7 +24,13 @@ For example:
 ./task1 empty.jpg
 ```
 
-It will open the image empty.jpg(grayscale) in one window. You have to choose the four points in clockwise direction starting from top-left point. After four points selected, it will open a new window with the projected image. Now there are two option, 
+It will open the image empty.jpg(grayscale) in one window. You have to choose the four points in clockwise direction starting from top-left point. If you don't want to go further and want to end here you can press "e" or "E" to close this image window. So, If you choosed four points then after four points selection, it will open a new window with the projected image. Now there are two option, 
 if u click "s" or "S" button on keyborad then it will open a new window with the cropped image and if you think you haven't chossen correct 4 point then press any button other than "s" or "S", it will open apain the original grayscaled image window and you can again process same as above.
 
-All the ouput images will be saved in the same directory.
+# To help
+```bash
+make help
+```
+If you enter wrong command then the help menu will be opened.
+
+Note: All the ouput images will be saved in the same directory.
