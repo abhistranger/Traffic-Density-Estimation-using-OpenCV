@@ -17,6 +17,7 @@ make all
 ```
 # To Run
 ./task1 image_name
+
 For example:
 ```
 ./task1 empty.jpg
