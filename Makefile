@@ -25,6 +25,6 @@ help:
 	@echo "help menu:"
 	@echo "make help               Show this help"
 	@echo "make clean              Remove all intermediate files"
-	@echo "make all                Compile the frogram"
+	@echo "make all                Compile the program"
 	@echo "./task1 image_name      Run the program but first you have to compile it"
 
