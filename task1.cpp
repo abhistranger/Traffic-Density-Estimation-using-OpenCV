@@ -37,7 +37,10 @@ int main(int argc, char* argv[]){
 		setMouseCallback("Original Greyscale Image",click_event,&pts_src);
 		while(pts_src.size()<4){
 			imshow("Original Greyscale Image", img_src);
-			waitKey(50);
+			k=waitKey(1);
+			if(k=='e'||k=='E'){
+				return 0;
+			}
 		}
 		destroyAllWindows();
 	
@@ -49,11 +52,6 @@ int main(int argc, char* argv[]){
 		pts_dst.push_back(Point2f(472+w,52+h));
 		pts_dst.push_back(Point2f(472,52+h));
 		
-		/*pts_dst.push_back(Point2f(472,52));
-		pts_dst.push_back(Point2f(472,900));
-		pts_dst.push_back(Point2f(800,900));
-		pts_dst.push_back(Point2f(800,52));*/
-		
 		Mat H = findHomography(pts_src,pts_dst);	
 		warpPerspective(img_src, img_trans, H, img_src.size());
 		imshow("Projected Image", img_trans);
@@ -61,7 +59,6 @@ int main(int argc, char* argv[]){
 	} while(k!='s'&&k!='S');
 	imwrite(filename.substr(0,filename.rfind("."))+"Transformed.jpg",img_trans);
 	Mat img_crop;
-	//img_trans(Rect(472,52,328,848)).copyTo(img_crop); 
 	img_trans(Rect(472,52,w,h)).copyTo(img_crop);
 	imwrite(filename.substr(0,filename.rfind("."))+"Cropped.jpg",img_crop);
 	imshow("Cropped Image", img_crop);
