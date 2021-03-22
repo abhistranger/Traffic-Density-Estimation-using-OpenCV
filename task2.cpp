@@ -18,7 +18,7 @@ void queuedensity_dynamicdensity(String file){
     Mat frame, fgMask;
     imgHomography H1 = fun("empty1.png");
     for(int i=0; i<20; i++){
-        pBackSub->apply(imread("empty1.png"), fgMask, 0.5);	
+        pBackSub->apply(imread("empty1Cropped.png"), fgMask, 0.5);	
     }
     
     Mat frame0, frame0_gray;
