@@ -106,8 +106,9 @@ void *queuedensity_dynamicdensity(void *object){
     }
     pthread_exit(NULL);
 }
-void method5 (String file, int NUM_OF_THREADS){
-    ofstream MyFile("out.txt");
+void method4 (String file, int NUM_OF_THREADS){
+    string out_file_name="out_method4_NUM_THREADS_"+to_string(NUM_OF_THREADS)+".txt";
+	ofstream MyFile(out_file_name);
     imgHomography H1 = fun("empty1.png");
     cout<<"framenum"<<"\t"<<"queue density"<<"\t"<<"dynamic density"<<"\n";
     MyFile <<"framenum"<<","<<"queue density"<<","<<"dynamic density"<<"\n";
@@ -187,8 +188,9 @@ void *process_frame (void *process_frame_structure_object){
         my_structure->dynamic_density = double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols);
         pthread_exit(NULL);
 }
-void method4 (String file, int NUM_OF_THREADS){
-	ofstream MyFile("out.txt");
+void method3 (String file, int NUM_OF_THREADS){
+	string out_file_name="out_method3_NUM_THREADS_"+to_string(NUM_OF_THREADS)+".txt";
+	ofstream MyFile(out_file_name);
 	Ptr<BackgroundSubtractor> pBackSub;
     VideoCapture capture(file);
     if (!capture.isOpened()){
@@ -268,8 +270,331 @@ void method4 (String file, int NUM_OF_THREADS){
 
 
 }
+
+void method1(String file, int x){
+	string out_file_name="out_method1_x_"+to_string(x)+".txt";
+	ofstream MyFile(out_file_name);
+	Ptr<BackgroundSubtractor> pBackSub;
+    pBackSub = createBackgroundSubtractorKNN();
+    VideoCapture capture(file);
+    if (!capture.isOpened()){
+        //error in opening the video input
+        cerr << "Unable to open video "<< endl;
+        return;
+    }
+    Mat frame, fgMask;
+    imgHomography H1 = fun("empty1.png");
+    for(int i=0; i<20; i++){
+        pBackSub->apply(imread("empty1Cropped.png"), fgMask, 0.5);	
+    }
+    
+    Mat frame0, frame0_gray;
+    capture >> frame0;
+	Mat frame0_crop =fun2(frame0,H1);
+	cvtColor(frame0_crop, frame0_gray, COLOR_BGR2GRAY);
+    Mat fr;
+    capture>> fr;
+    
+    cout<<"framenum"<<"\t"<<"queue density"<<"\t"<<"dynamic density"<<"\n";
+    MyFile <<"framenum"<<","<<"queue density"<<","<<"dynamic density"<<"\n";
+    while (true) {
+        capture >> frame;
+        if (frame.empty())
+            break;
+        //update the background model
+        frame=fun2(frame,H1);
+        pBackSub->apply(frame, fgMask,0.00001);
+        //pBackSub->apply(frame, fgMask);
+        //get the frame number and write it on the current frame
+        rectangle(frame, cv::Point(10, 2), cv::Point(100,20),
+                  cv::Scalar(255,255,255), -1);
+        stringstream ss;
+        ss << capture.get(CAP_PROP_POS_FRAMES);
+        string frameNumberString = ss.str();
+        putText(frame, frameNumberString.c_str(), cv::Point(15, 15),
+                FONT_HERSHEY_SIMPLEX, 0.5 , cv::Scalar(0,0,0));
+        //show the current frame and the fg masks
+        threshold(fgMask,fgMask,127,255,THRESH_BINARY);
+        //imshow("frame", frame);
+        imshow("FG Mask", fgMask);
+        
+        
+        //dynamic part
+        Mat frame_gray;
+        cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
+        imshow("frame", frame_gray);
+		//Mat frame_crop = fun3(frame_gray,H);
+		
+		Mat flow(frame0_gray.size(), CV_32FC2);
+        calcOpticalFlowFarneback(frame0_gray, frame_gray, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
+        // visualization
+        Mat flow_parts[2];
+        split(flow, flow_parts);
+        Mat magnitude, angle, magn_norm;
+        cartToPolar(flow_parts[0], flow_parts[1], magnitude, angle, true);
+        normalize(magnitude, magn_norm, 0.0f, 1.0f, NORM_MINMAX);
+        angle *= ((1.f / 360.f) * (180.f / 255.f));
+        threshold(magnitude,magnitude,10,255,THRESH_BINARY);
+
+        //build hsv image
+        Mat _hsv[3], hsv, hsv8, bgr;
+        _hsv[0] = angle;
+        _hsv[1] = Mat::ones(angle.size(), CV_32F);
+        _hsv[2] = magn_norm;
+        merge(_hsv, 3, hsv);
+        hsv.convertTo(hsv8, CV_8U, 255.0);
+        cvtColor(hsv8, bgr, COLOR_HSV2BGR);
+        //imshow("ff",magn_norm);
+        imshow("frame_gray", magnitude);
+        //imshow("frame_hsv",bgr);
+        frame0_gray=frame_gray;
+        
+        //print
+        cout<<frameNumberString<<"\t\t"<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<"\t\t"<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        MyFile <<frameNumberString<<","<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<","<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        for(int j=0;j<x-1;j++){
+        	cout<<stoi(frameNumberString)+(3*(j+1))<<"\t\t"<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<"\t\t"<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        	MyFile <<stoi(frameNumberString)+(3*(j+1))<<","<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<","<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        	capture >> frame;
+			capture >> frame;
+			capture >> frame;
+        }
+        //get the input from the keyboard
+        int keyboard = waitKey(30);
+        if (keyboard == 'q' || keyboard == 27)
+            break;
+    	capture >> frame;
+    	capture >> frame;
+    }
+    MyFile.close();
+    return;
+}
+
+void method2(String file, int X, int Y){
+	string out_file_name="out_method1_XxY_"+to_string(X)+"x"+to_string(Y)+".txt";
+	ofstream MyFile(out_file_name);
+	Ptr<BackgroundSubtractor> pBackSub;
+	pBackSub = createBackgroundSubtractorKNN();
+    VideoCapture capture(file);
+    if (!capture.isOpened()){
+        //error in opening the video input
+        cerr << "Unable to open video "<< endl;
+        return;
+    }
+    
+    //capture.set(CAP_PROP_FRAME_WIDTH,X);
+	//capture.set(CAP_PROP_FRAME_HEIGHT,Y);
+    
+    Mat frame, fgMask;
+    imgHomography H1 = fun("empty1.png");
+    Mat temp_img=imread("empty1Cropped.png");
+    
+    resize(temp_img, temp_img, Size(X, Y), 0, 0, INTER_CUBIC);
+    
+    imshow("Temp Image", temp_img);
+    for(int i=0; i<20; i++){
+    	//cout<<1<<endl;
+        pBackSub->apply(temp_img, fgMask, 0.5);	
+    }
+    
+    Mat frame0, frame0_gray;
+    capture >> frame0;
+	Mat frame0_crop =fun2(frame0,H1);
+	cvtColor(frame0_crop, frame0_gray, COLOR_BGR2GRAY);
+	resize(frame0_gray, frame0_gray, Size(X, Y), 0, 0, INTER_CUBIC);
+    Mat fr;
+    capture>> fr;
+    
+    cout<<"framenum"<<"\t"<<"queue density"<<"\t"<<"dynamic density"<<"\n";
+    MyFile <<"framenum"<<","<<"queue density"<<","<<"dynamic density"<<"\n";
+    while (true) {
+        capture >> frame;
+        if (frame.empty())
+            break;
+        //update the background model
+        frame=fun2(frame,H1);
+        resize(frame, frame, Size(X, Y), 0, 0, INTER_CUBIC);
+        pBackSub->apply(frame, fgMask,0.00001);
+        //pBackSub->apply(frame, fgMask);
+        //get the frame number and write it on the current frame
+        rectangle(frame, cv::Point(10, 2), cv::Point(100,20),
+                  cv::Scalar(255,255,255), -1);
+        stringstream ss;
+        ss << capture.get(CAP_PROP_POS_FRAMES);
+        string frameNumberString = ss.str();
+        putText(frame, frameNumberString.c_str(), cv::Point(15, 15),
+                FONT_HERSHEY_SIMPLEX, 0.5 , cv::Scalar(0,0,0));
+        //show the current frame and the fg masks
+        threshold(fgMask,fgMask,127,255,THRESH_BINARY);
+        //imshow("frame", frame);
+        imshow("FG Mask", fgMask);
+        
+        
+        //dynamic part
+        Mat frame_gray;
+        cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
+        imshow("frame", frame_gray);
+        //resize(frame_gray, frame_gray, Size(X, Y), 0, 0, INTER_CUBIC);
+		//Mat frame_crop = fun3(frame_gray,H);
+		
+		Mat flow(frame0_gray.size(), CV_32FC2);
+        calcOpticalFlowFarneback(frame0_gray, frame_gray, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
+        // visualization
+        Mat flow_parts[2];
+        split(flow, flow_parts);
+        Mat magnitude, angle, magn_norm;
+        cartToPolar(flow_parts[0], flow_parts[1], magnitude, angle, true);
+        normalize(magnitude, magn_norm, 0.0f, 1.0f, NORM_MINMAX);
+        angle *= ((1.f / 360.f) * (180.f / 255.f));
+        threshold(magnitude,magnitude,10,255,THRESH_BINARY);
+
+        //build hsv image
+        Mat _hsv[3], hsv, hsv8, bgr;
+        _hsv[0] = angle;
+        _hsv[1] = Mat::ones(angle.size(), CV_32F);
+        _hsv[2] = magn_norm;
+        merge(_hsv, 3, hsv);
+        hsv.convertTo(hsv8, CV_8U, 255.0);
+        cvtColor(hsv8, bgr, COLOR_HSV2BGR);
+        //imshow("ff",magn_norm);
+        imshow("frame_gray", magnitude);
+        //imshow("frame_hsv",bgr);
+        frame0_gray=frame_gray;
+        
+        //print
+        cout<<frameNumberString<<"\t\t"<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<"\t\t"<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        MyFile <<frameNumberString<<","<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<","<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        //get the input from the keyboard
+        int keyboard = waitKey(30);
+        if (keyboard == 'q' || keyboard == 27)
+            break;
+    	capture >> frame;
+    	capture >> frame;
+    }
+    MyFile.close();
+    return;
+}
+
+void method_extra(String file){
+	ofstream MyFile("out_method_sparse_vs_dense.txt");
+    VideoCapture capture(file);
+    if (!capture.isOpened()){
+        //error in opening the video input
+        cerr << "Unable to open video "<< endl;
+        return;
+    }
+    Mat frame;
+    Mat frame0, frame0_gray;
+    capture >> frame0;
+    imgHomography H1 = fun("empty1.png");
+	Mat frame0_crop =fun2(frame0,H1);
+	cvtColor(frame0_crop, frame0_gray, COLOR_BGR2GRAY);
+    Mat fr;
+    capture>> fr;
+    
+    //sparse
+    vector<Scalar> colors;
+    RNG rng;
+    for(int i = 0; i < 100; i++){
+        int r = rng.uniform(0, 256);
+        int g = rng.uniform(0, 256);
+        int b = rng.uniform(0, 256);
+        colors.push_back(Scalar(r,g,b));
+    }
+	vector<Point2f> p0, p1;
+	goodFeaturesToTrack(frame0_gray, p0, 100, 0.3, 7, Mat(), 7, false, 0.04);
+	Mat mask = Mat::zeros(frame0_crop.size(), frame0_crop.type());
+    
+    
+    cout<<"framenum"<<"\t"<<"sparse queue density"<<"\t"<<"dense dynamic density"<<"\n";
+    MyFile <<"framenum"<<","<<"sparse queue density"<<","<<"dense dynamic density"<<"\n";
+    while (true) {
+        capture >> frame;
+        if (frame.empty())
+            break;
+        frame=fun2(frame,H1);
+        stringstream ss;
+        ss << capture.get(CAP_PROP_POS_FRAMES);
+        string frameNumberString = ss.str();
+        
+        
+        //grayscaling
+        Mat frame_gray;
+        cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
+        imshow("frame", frame_gray);
+        
+        //sparse dynamic part
+		vector<uchar> status;
+    	vector<float> err;
+    	TermCriteria criteria = TermCriteria((TermCriteria::COUNT) + (TermCriteria::EPS), 10, 0.03);
+    	calcOpticalFlowPyrLK(frame0_gray, frame_gray, p0, p1, status, err, Size(15,15), 2, criteria);
+    	vector<Point2f> good_new;
+    	
+    	// Visualization part
+    	for(uint i = 0; i < p0.size(); i++){
+        // Select good points
+        	if(status[i] == 1) {
+        		good_new.push_back(p1[i]);
+    			// Draw the tracks
+      			line(mask,p1[i], p0[i], colors[i], 2);
+            	circle(frame, p1[i], 5, colors[i], -1);
+			}
+ 		}
+ 		
+ 		Mat img_sp;
+    	add(frame, mask, img_sp);
+    	imshow("flow", img_sp);
+
+
+		//dense dynamic part
+		Mat flow(frame0_gray.size(), CV_32FC2);
+        calcOpticalFlowFarneback(frame0_gray, frame_gray, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
+        // visualization
+        Mat flow_parts[2];
+        split(flow, flow_parts);
+        Mat magnitude, angle, magn_norm;
+        cartToPolar(flow_parts[0], flow_parts[1], magnitude, angle, true);
+        normalize(magnitude, magn_norm, 0.0f, 1.0f, NORM_MINMAX);
+        angle *= ((1.f / 360.f) * (180.f / 255.f));
+        threshold(magnitude,magnitude,10,255,THRESH_BINARY);
+
+        //build hsv image
+        Mat _hsv[3], hsv, hsv8, bgr;
+        _hsv[0] = angle;
+        _hsv[1] = Mat::ones(angle.size(), CV_32F);
+        _hsv[2] = magn_norm;
+        merge(_hsv, 3, hsv);
+        hsv.convertTo(hsv8, CV_8U, 255.0);
+        cvtColor(hsv8, bgr, COLOR_HSV2BGR);
+        //imshow("ff",magn_norm);
+        imshow("frame_gray", magnitude);
+        //imshow("frame_hsv",bgr);
+        frame0_gray=frame_gray;
+        
+        p0=good_new;
+        goodFeaturesToTrack(frame0_gray, p0, 100, 0.3, 7, Mat(), 7, false, 0.04);
+        mask = Mat::zeros(frame.size(), frame.type());
+        
+        //print
+        cout<<frameNumberString<<"\t\t"<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        MyFile <<frameNumberString<<","<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
+        //get the input from the keyboard
+        int keyboard = waitKey(30);
+        if (keyboard == 'q' || keyboard == 27)
+            break;
+    	capture >> frame;
+    	capture >> frame;
+    }
+    MyFile.close();
+    return;
+}
+
 int main(int argc, char* argv[]){
-	method4(argv[1], stoi(argv[2]));
+	method1(argv[1],stoi(argv[2]));
+	//method2(argv[1],stoi(argv[2]),stoi(argv[3));
+	//method3(argv[1], stoi(argv[2]));
+	//method4(argv[1], stoi(argv[2]));
+	//method_extra(argv[1]);
 	return 0;
 }
 

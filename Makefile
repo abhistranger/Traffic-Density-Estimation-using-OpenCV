@@ -3,12 +3,13 @@ CFLAGS= -g -Wall
 
 TARGET1=task1
 TARGET2=task2
+TARGET3=task3
 
 RM=rm -rf
 
 LIB=`pkg-config --cflags --libs opencv`
 
-all: $(TARGET1) $(TARGET2)
+all: $(TARGET1) $(TARGET2) $(TARGET3)
 
 $(TARGET1): $(TARGET1).cpp 
 	@$(C) $(CFLAGS) -o $(TARGET1) $(TARGET1).cpp $(LIB)
@@ -16,9 +17,12 @@ $(TARGET1): $(TARGET1).cpp
 $(TARGET2): $(TARGET2).cpp $(TARGET1).h
 	@$(C) $(CFLAGS) -o $(TARGET2) $(TARGET2).cpp $(TARGET1).h $(LIB)
 	
+$(TARGET3): $(TARGET3).cpp $(TARGET1).h
+	@$(C) $(CFLAGS) -pthread -std=c++11 -o $(TARGET3) $(TARGET3).cpp $(TARGET1).h $(LIB)
+	
 
 clean:
-	@$(RM) $(TARGET1) $(TARGET2)
+	@$(RM) $(TARGET1) $(TARGET2) $(TARGET3)
 
 .DEFAULT:
 	@echo "Wrong Command"
