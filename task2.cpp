@@ -87,7 +87,7 @@ void queuedensity_dynamicdensity(String file){
         MyFile <<frameNumberString<<","<<double(countNonZero(fgMask))/double(fgMask.rows)/double(fgMask.cols)<<","<<double(countNonZero(magnitude))/double(magnitude.rows)/double(magnitude.cols)<<"\n";
         //get the input from the keyboard
         int keyboard = waitKey(30);
-        if (keyboard == 'q' || keyboard == 27)
+        if (keyboard == 'q' || keyboard == 'Q')
             break;
     	capture >> frame;
     	capture >> frame;
