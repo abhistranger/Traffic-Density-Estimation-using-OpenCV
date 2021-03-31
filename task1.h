@@ -73,10 +73,10 @@ imgHomography fun(string argv){
 		imshow("Projected Image", img_trans);
 		k = waitKey(0);
 	} while(k!='s'&&k!='S');
-	imwrite(filename.substr(0,filename.rfind("."))+"Transformed.png",img_trans);
+	imwrite(filename.substr(0,filename.rfind("."))+"Transformed"+filename.substr(filename.rfind(".")),img_trans);
 	Mat img_crop;
 	img_trans(Rect(472,52,H1.w,H1.h)).copyTo(img_crop);
-	imwrite(filename.substr(0,filename.rfind("."))+"Cropped.png",img_crop);
+	imwrite(filename.substr(0,filename.rfind("."))+"Cropped"+filename.substr(filename.rfind(".")),img_crop);
 	imshow("Cropped Image", img_crop);
 	waitKey(3000);
 	destroyAllWindows();
