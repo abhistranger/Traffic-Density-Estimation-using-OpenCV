@@ -36,10 +36,10 @@ For example:
 ```
 ./task2 trafficvideo.mp4
 ```
-It will firstly execute task1, asking the user to select four points on the image in a clock wise manner. Pressing 's' or 'S' on a satisfactory result of transformmed image, shall save the transformmed and cropped image in the same directory.
-After waiting for 3 seconds, the windows displaying the Original Grayscale Image, Transformmed Image and Cropped Image are destroyed, and the execution of program for calculation of queue and dynamic density begins on the input video, processing every 3rd frame of the video.
-At the time of execution, each frame being processed is displayed in "frame" window as a grayscale image, along with the frame number at top-left corner. Also corresponding frames for Queue Density and Dynamic Density calculations are shown in windows named "FG Mask" and "frame_gray" respectively. These frames mark the results of Background Subtraction for calculating queue density and Dense Optical Flow for calculating dynamic density respectively.
-Queue Density and Dynamic Density as calculated is printed on the terminal with its corresponding frame number, and the same data is stored on a file, namely "out.txt" after successful execution of the program on the entire video.
+It will firstly execute task1, asking the user to select four points on the image in a clock wise manner. Pressing 's' or 'S' on a satisfactory result of transformmed image, shall save the transformmed and cropped image in the same directory.<\br>
+After waiting for 3 seconds, the windows displaying the Original Grayscale Image, Transformmed Image and Cropped Image are destroyed, and the execution of program for calculation of queue and dynamic density begins on the input video, processing every 3rd frame of the video.<\br>
+At the time of execution, each frame being processed is displayed in "frame" window as a grayscale image, along with the frame number at top-left corner. Also corresponding frames for Queue Density and Dynamic Density calculations are shown in windows named "FG Mask" and "frame_gray" respectively. These frames mark the results of Background Subtraction for calculating queue density and Dense Optical Flow for calculating dynamic density respectively.<\br>
+Queue Density and Dynamic Density as calculated is printed on the terminal with its corresponding frame number, and the same data is stored on a file, namely "out.txt" after successful execution of the program on the entire video.<\br>
 
 # To help
 ```bash
