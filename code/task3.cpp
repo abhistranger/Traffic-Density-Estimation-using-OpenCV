@@ -590,11 +590,38 @@ void method_extra(String file){
 }
 
 int main(int argc, char* argv[]){
-	method1(argv[1],stoi(argv[2]));
-	//method2(argv[1],stoi(argv[2]),stoi(argv[3));
-	//method3(argv[1], stoi(argv[2]));
-	//method4(argv[1], stoi(argv[2]));
-	//method_extra(argv[1]);
+	if(string(argv[1])=="method1"){
+		int n;
+		cout<<"Enter the value of x (The number of frames you wish to drop): ";
+		cin>>n;
+		method1(argv[2],n);
+	}
+	else if(string(argv[1])=="method2"){
+		int x, y;
+		cout<<"Enter the Resolution: \n Enter the value of X: ";
+		cin>>x;
+		cout<<"Enter the value of Y";
+		cin>>y;
+		method2(argv[2], x, y);
+	}
+	else if(string(argv[1])=="method3"){
+		int n;
+		cout<<"Enter the Number of Threads: ";
+		cin>>n;
+		method3(argv[2],n);
+	}
+	else if(string(argv[1])=="method4"){
+		int n;
+		cout<<"Enter the Number of Threads: ";
+		cin>>n;
+		method4(string(argv[1]),n);
+	}
+	else if(string(argv[1])=="method_extra"){
+		method_extra(argv[2]);
+	}
+	else{
+		cout<<"No Such Method Exists \n";
+	}
 	return 0;
 }
 
