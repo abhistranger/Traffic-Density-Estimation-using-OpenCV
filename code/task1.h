@@ -59,7 +59,6 @@ imgHomography fun(string argv){
 			}
 		}
 		destroyAllWindows();
-	
 		H1.w = dist(pts_src[0].x,pts_src[0].y,pts_src[1].x,pts_src[1].y);
 		H1.h = (dist(pts_src[0].x,pts_src[0].y,pts_src[3].x,pts_src[3].y)+dist(pts_src[2].x,pts_src[2].y,pts_src[1].x,pts_src[1].y))/2;
 	
