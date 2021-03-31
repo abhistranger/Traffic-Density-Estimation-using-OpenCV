@@ -36,6 +36,8 @@ help:
 	@echo "make all                Compile the frogram"
 	@echo "make task1              Compile task1"
 	@echo "make task2              Compile task2"
-	@echo "./task1 image_name      Run task1 program but first compile it, if u haven't"
-	@echo "./task2 video_name      Run task2 program but first compile it, if u haven't"
+	@echo "make task3              Compile task3"
+	@echo "./task1 image_name      Run task1 program but first compile it, if you haven't"
+	@echo "./task2 video_name      Run task2 program but first compile it, if you haven't"
+	@echo "./task3 method_name video_name  Run task3 program but first compile it, if you haven't, for example:./task3 method1"
 
