@@ -15,13 +15,21 @@ or
 ```bash
 make all
 ```
-# To Run
+# To Run Task 1 - Camera angle correction and frame cropping
 ```bash
 ./task1 <image_name>.jpg
 ```
 For example:
 ```
 ./task1 empty.jpg
+```
+# To Run Task 2 - Queue and dynamic density estimation from traffic video
+```bash
+./task2 <video_name>.mp4
+```
+For example:
+```
+./task2 trafficvideo.mp4
 ```
 
 It will open the image <image_name>.jpg (grayscale) in one window. You have to choose the four points in clockwise direction starting from the top-left point. After the four points are selected, it will open a new window with the projected image. 
@@ -34,5 +42,7 @@ make help
 ```
 If you enter wrong command then the help menu will be opened.
 
-*You can choose to exit the Original Grayscale Image window anytime by pressing "e" or"E" key on the keyboard.
-*All the ouput images will be saved in the same directory.
+*You can choose to exit the Original Grayscale Image window anytime by pressing 'e' or 'E' key on the keyboard.</br>
+*You can choose to quit the execution of the program on the video anytime by pressing 'q' or 'Q' key on the keyboard.</br>
+*All the ouput images and text files will be saved in the same directory.</br>
+
