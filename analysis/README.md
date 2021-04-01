@@ -13,10 +13,10 @@
 12. out_method3_NUM_THREADS_3: output file by method3 with parameter x=3
 13. out_method3_NUM_THREADS_4: output file by method3 with parameter x=4
 14. out_method3_NUM_THREADS_5: output file by method3 with parameter x=5
-15. out_method4_NUM_THREADS_2: output file by method3 with parameter x=2
-16. out_method4_NUM_THREADS_3: output file by method3 with parameter x=3
-17. out_method4_NUM_THREADS_4: output file by method3 with parameter x=4
-18. out_method4_NUM_THREADS_5: output file by method3 with parameter x=5
+15. out_method4_NUM_THREADS_2: output file by method4 with parameter x=2
+16. out_method4_NUM_THREADS_3: output file by method4 with parameter x=3
+17. out_method4_NUM_THREADS_4: output file by method4 with parameter x=4
+18. out_method4_NUM_THREADS_5: output file by method4 with parameter x=5
 19. out_sparse_vs_dense: output file by method_extra for sparse vs dense
 
 *all file last line contains the runtime.
