@@ -23,9 +23,9 @@
 
 # Scripts:
 1. method1: post-scripting and ploting file for method1
-2. method2: post-scripting and ploting file for method1
-3. method3: post-scripting and ploting file for method1
-4. method4: post-scripting and ploting file for method1
+2. method2: post-scripting and ploting file for method2
+3. method3: post-scripting and ploting file for method3
+4. method4: post-scripting and ploting file for method4
 5. method_extra: post-scripting and ploting file for sparse vs dense method
 6. task2(baseline): ploting file for baseline task2 output
 
